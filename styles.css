@@ -1,0 +1,33 @@
+#filter_checklist .checklistbox {
+    padding: 0 !important;
+}
+
+#filter_checklist .checklistbox br {
+    display: none;
+}
+
+#filter_checklist .checklistbox br.clearer {
+    display: block;
+}
+
+#filter_checklist .checklistbox label {
+    font-weight: 300;
+}
+
+#filter_checklist ol.checklist .itemheading {
+    font-weight: 400;
+    margin-left: 0 !important;
+}
+
+#filter_checklist ol.checklist .itemblack {
+    color: inherit;
+}
+
+#filter_checklist ol.checklist {
+    padding-left: 1rem;
+}
+
+#filter_checklist #checklistouter {
+    margin: 1rem 0 0 0;
+    padding-left: 0;
+}
