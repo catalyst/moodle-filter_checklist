@@ -69,7 +69,7 @@ class filter_checklist extends moodle_text_filter {
             $output .= $checklist->view(true);
             $output .= "</div>";
 
-            $text = preg_replace('/\{checklist:' . $cm->name . '\}/isuU', $output, $text);
+            $text = preg_replace('/\{checklist:' . $cm->name . '\}/isuU', $output, $text) ?? $text;
         }
 
         return $text;
