@@ -36,40 +36,39 @@ class filter_checklist extends moodle_text_filter {
 
         if (stripos($text, '{checklist:') !== false) {
             // Checklist course module ID specified
-            preg_match_all('/\{checklist:(.+)}/', $text, $matches);
-            $checklistname = $matches[1][0];
-            unset($matches);
-
-            $checklistinstance = $DB->get_record('checklist', array('name' => $checklistname, 'course' => $COURSE->id));
-            if ($checklistinstance == null) {
-                return $text;
-            }
-
-            $modinfo = get_fast_modinfo($COURSE);
-            $cm = null;
-            foreach ($modinfo->get_cms() as $modinfo) {
-                if ($modinfo->modname == 'checklist' && $modinfo->instance == $checklistinstance->id) {
-                    $cm = $modinfo;
+            preg_match_all('/\{checklist:([^{}]+)}/', $text, $matches);
+            foreach ($matches[1] as $checklistname) {
+                $checklistinstance = $DB->get_record('checklist', array('name' => $checklistname, 'course' => $COURSE->id));
+                if ($checklistinstance == null) {
+                    continue;
                 }
+
+                $modinfo = get_fast_modinfo($COURSE);
+                $cm = null;
+                foreach ($modinfo->get_cms() as $modinfo) {
+                    if ($modinfo->modname == 'checklist' && $modinfo->instance == $checklistinstance->id) {
+                        $cm = $modinfo;
+                    }
+                }
+                if ($cm == null) {
+                    continue;
+                }
+
+                $context = context_module::instance($cm->id, IGNORE_MISSING);
+                // Can't find course module, do not display.
+                if (!($context instanceof context_module)) {
+                    continue;
+                }
+
+                $checklist = $DB->get_record('checklist', array('id' => $cm->instance), '*', MUST_EXIST);
+                $checklist = new checklist_class($cm->id, $USER->id, $checklist, $cm, $COURSE);
+
+                $output = "<div id='filter_checklist'>";
+                $output .= $checklist->view(true);
+                $output .= "</div>";
+
+                $text = preg_replace('/\{checklist:' . preg_quote($cm->name, '/') . '\}/isuU', $output, $text) ?? $text;
             }
-            if ($cm == null) {
-                return $text;
-            }
-
-            $context = context_module::instance($cm->id, IGNORE_MISSING);
-            // Can't find course module, do not display.
-            if (!($context instanceof context_module)) {
-                return $text;
-            }
-
-            $checklist = $DB->get_record('checklist', array('id' => $cm->instance), '*', MUST_EXIST);
-            $checklist = new checklist_class($cm->id, $USER->id, $checklist, $cm, $COURSE);
-
-            $output = "<div id='filter_checklist'>";
-            $output .= $checklist->view(true);
-            $output .= "</div>";
-
-            $text = preg_replace('/\{checklist:' . preg_quote($cm->name, '/') . '\}/isuU', $output, $text) ?? $text;
         }
 
         return $text;
