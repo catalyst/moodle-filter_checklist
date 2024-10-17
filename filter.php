@@ -65,6 +65,13 @@ class filter_checklist extends moodle_text_filter {
 
                 $output = "<div id='filter_checklist'>";
                 $output .= $checklist->view(true);
+                if (has_capability('mod/checklist:edit', $context) && get_config('filter_checklist', 'edit_checklist_from_filter')) {
+                    $editlink = new moodle_url('/mod/checklist/edit.php', ['id' => $cm->id]);
+                    $output .= $this->filter_checklist_get_button($checklistname, $editlink);
+                    if (!empty($helpmessage = get_config('filter_checklist', 'edit_button_help_message'))) {
+                        $output .= "<p>" . $helpmessage . "</p>";
+                    }
+                }
                 $output .= "</div>";
 
                 $text = preg_replace('/\{checklist:' . preg_quote($cm->name, '/') . '\}/isuU', $output, $text) ?? $text;
@@ -72,6 +79,10 @@ class filter_checklist extends moodle_text_filter {
         }
 
         return $text;
+    }
+
+    private function filter_checklist_get_button($name, $link) {
+        return '<a href="' . $link->out() . '" class="btn btn-primary filter-checklist-edit" target="_blank">' . get_string('edit') . ' <i>' . $name . '</i></a>';
     }
 }
 

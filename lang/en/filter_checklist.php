@@ -23,3 +23,7 @@
 
 $string['filtername'] = 'Checklist';
 $string['privacy:metadata'] = 'The filter checklist plugin does not store any personal data.';
+$string['edit_checklist_from_filter'] = 'Allow checklist edit from filter';
+$string['edit_checklist_from_filter_desc'] = 'Adds a button to the checklist filter output to edit the checklist.';
+$string['edit_button_help_message'] = 'Help message for edit button.';
+$string['edit_button_help_message_desc'] = 'Adds a text under the edit button.';
