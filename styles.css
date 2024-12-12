@@ -31,3 +31,7 @@
     margin: 1rem 0 0 0;
     padding-left: 0;
 }
+
+#filter_checklist > * {
+    margin-top: 1rem;
+}
