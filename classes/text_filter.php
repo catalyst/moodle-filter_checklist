@@ -55,14 +55,14 @@ class text_filter extends \core_filters\text_filter {
                     continue;
                 }
 
-                $context = context_module::instance($cm->id, IGNORE_MISSING);
+                $context = \context_module::instance($cm->id, IGNORE_MISSING);
                 // Can't find course module, do not display.
-                if (!($context instanceof context_module)) {
+                if (!($context instanceof \context_module)) {
                     continue;
                 }
 
                 $checklist = $DB->get_record('checklist', array('id' => $cm->instance), '*', MUST_EXIST);
-                $checklist = new checklist_class($cm->id, $USER->id, $checklist, $cm, $COURSE);
+                $checklist = new \checklist_class($cm->id, $USER->id, $checklist, $cm, $COURSE);
 
                 $output = "<div id='filter_checklist'>";
                 $output .= $checklist->view(true);
