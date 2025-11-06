@@ -67,7 +67,7 @@ class text_filter extends \core_filters\text_filter {
                 $output = "<div id='filter_checklist'>";
                 $output .= $checklist->view(true);
                 if (has_capability('mod/checklist:edit', $context) && get_config('filter_checklist', 'edit_checklist_from_filter')) {
-                    $editlink = new moodle_url('/mod/checklist/edit.php', ['id' => $cm->id]);
+                    $editlink = new \core\url('/mod/checklist/edit.php', ['id' => $cm->id]);
                     $output .= $this->filter_checklist_get_button($checklistname, $editlink);
                     if (!empty($helpmessage = get_config('filter_checklist', 'edit_button_help_message'))) {
                         $output .= "<p>" . $helpmessage . "</p>";
